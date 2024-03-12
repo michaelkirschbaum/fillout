@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
+
 /*
 type FilterClauseType = {
   id: string;
@@ -12,15 +13,9 @@ type FilterClauseType = {
 type ResponseFiltersType = ResponseFilter[];
 */
 
-function passesFilters(response) {
-  response.questions.forEach((e) => {});
-
-  return true;
-}
-
 app.get('/:formId/filteredResponses', async (req, res) => {
   const url = "https://api.fillout.com/v1/api/forms/" + req.params.formId + "/submissions?";
-  const filters = JSON.parse(req.query.filters);
+  const filters = JSON.parse(req.query.filters ? req.query.filters : null);
 
   try {
     const response = await fetch(url + new URLSearchParams({ ...req.query }), {
@@ -36,7 +31,11 @@ app.get('/:formId/filteredResponses', async (req, res) => {
     // apply filters
     const filteredData = {
       ...data,
-      responses: data.responses.filter(passesFilters)
+      responses: data.responses.filter((response) => {
+        response.questions.forEach((e) => null);
+
+        return true;
+      })
     };
 
     res.json(filteredData);
