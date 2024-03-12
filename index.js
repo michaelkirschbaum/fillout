@@ -1,14 +1,18 @@
 const express = require('express');
+require('dotenv').config();
 const app = express();
 const port = 3000;
 
 app.get('/:formId/filteredResponses', async (req, res) => {
+  const url = "https://api.fillout.com/v1/api/forms/" + req.params.formId + "/submissions";
+
   try {
-    const response = await fetch("https://api.fillout.com", {
+    const response = await fetch(url, {
       method: "GET",
-      mode: 'cors',
+      mode: "cors",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.API_KEY}`
       },
     });
 
