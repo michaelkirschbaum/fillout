@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/:formId/filteredResponses', async (req, res) => {
-  const url = "https://api.fillout.com/v1/api/forms/" + req.params.formId + "/submissions";
+  const url = "https://api.fillout.com/v1/api/forms/" + req.params.formId + "/submissions?";
 
   try {
     const response = await fetch(url + new URLSearchParams({ ...req.query }), {
