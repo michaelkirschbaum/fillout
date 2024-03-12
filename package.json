@@ -1,11 +1,11 @@
 {
   "name": "filter",
   "version": "1.0.0",
-  "description": "",
+  "description": "filters fillout api form submissions",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js",
+    "start": "node src/index.js",
     "test": "jest --watch --coverage"
   },
   "jest": {
