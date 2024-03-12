@@ -7,7 +7,7 @@ app.get('/:formId/filteredResponses', async (req, res) => {
   const url = "https://api.fillout.com/v1/api/forms/" + req.params.formId + "/submissions";
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(url + new URLSearchParams({ ...req.query }), {
       method: "GET",
       mode: "cors",
       headers: {
