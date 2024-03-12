@@ -1,7 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get('/:formId/filteredResponses', async (req, res) => {
   const url = "https://api.fillout.com/v1/api/forms/" + req.params.formId + "/submissions";
