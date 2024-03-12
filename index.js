@@ -3,6 +3,8 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.set('json spaces', 4);
+
 app.get('/:formId/filteredResponses', async (req, res) => {
   const url = "https://api.fillout.com/v1/api/forms/" + req.params.formId + "/submissions?";
   const filters = JSON.parse(req.query.filters ? req.query.filters : null);
