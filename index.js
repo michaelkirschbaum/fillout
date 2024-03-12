@@ -35,10 +35,10 @@ app.get('/:formId/filteredResponses', async (req, res) => {
             return entry?.value !== filter.value ? true : false;
             break;
           case 'greater_than':
-            return entry?.value > filter.value ? true : false;
+            return entry?.value > filter.value && !isNaN(new Date(entry.value)) && !isNaN(new Date(filter.value)) ? true : false;
             break;
           case 'less_than':
-            return entry?.value < filter.value ? true : false;
+            return entry?.value < filter.value && !isNaN(new Date(entry.value)) && !isNaN(new Date(filter.value)) ? true : false;
             break;
           default:
             return false;
