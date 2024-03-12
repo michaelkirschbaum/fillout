@@ -28,17 +28,33 @@ app.get('/:formId/filteredResponses', async (req, res) => {
     });
     const data = await response.json();
 
-    // apply filters
-    const filteredData = {
-      ...data,
-      responses: data.responses.filter((response) => {
-        response.questions.forEach((e) => null);
+    // remove response if every filter condition is not met
+    const filteredData = data.responses.filter(res => {
+      return filters ? filters.every(filter => {
+        // get matching question from the filter id
+        const entry = res.questions.find(e => e.id === filter.id);
 
-        return true;
-      })
-    };
+        // if entry does not exist or condition not met return false
+        switch(filter.condition) {
+          case 'equals':
+            return entry?.value === filter.value ? true : false;
+            break;
+          case 'does_not_equal':
+            return entry?.value !== filter.value ? true : false;
+            break;
+          case 'greater_than':
+            return entry?.value > filter.value ? true : false;
+            break;
+          case 'less_than':
+            return entry?.value < filter.value ? true : false;
+            break;
+          default:
+            return false;
+        }  // if filters are not defined return unfiltered responses
+      }) : data.responses;
+    });
 
-    res.json(filteredData);
+    res.json({ ...data, responses: filteredData });
   } catch (err) {
     res.status(500).send('server error');
   }
