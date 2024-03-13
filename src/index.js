@@ -21,8 +21,8 @@ app.get('/:formId/filteredResponses', async (req, res) => {
     const data = await response.json();
 
     // remove response if every filter condition is not met
-    const filteredData = data.responses.filter(res => {
-      return filters ? filters.every(filter => {
+    const filteredData = data.responses?.filter(res => {
+      return filters?.every(filter => {
         // get matching question from the filter id
         const entry = res.questions.find(e => e.id === filter.id);
 
@@ -43,8 +43,8 @@ app.get('/:formId/filteredResponses', async (req, res) => {
           default:
             return false;
         }  // if filters are not defined return unfiltered responses
-      }) : data.responses;
-    });
+      }) ?? data.responses;
+    }) ?? data;
 
     res.json({
       responses: filteredData,
