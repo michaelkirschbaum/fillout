@@ -4,7 +4,7 @@
   "description": "filters fillout api form submissions",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "test": "jest --watch --coverage"
   },

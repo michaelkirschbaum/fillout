@@ -1,12 +1,27 @@
 const request = require('supertest');
 const app = require('../index');
 
-describe('filtererdResponses endpoint', () => {
+const responses = {};
+
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve(responses),
+  })
+);
+
+beforeEach(() => {
+  fetch.mockClear();
+});
+
+describe('filteredResponses endpoint', () => {
   let formId = "cLZojxk94ous";
 
-  test.skip('should return 200', async () => {
+  test('should return 200', async () => {
     const res = await request(app)
       .get(`/${formId}/filteredResponses`);
+
     expect(res.statusCode).toEqual(200);
+    expect(res).toEqual({ responses: responses });
+    expect(fetch).toHaveBeenCalledTimes(1);
   });
 });
