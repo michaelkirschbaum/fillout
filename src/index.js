@@ -54,8 +54,8 @@ app.get('/:formId/filteredResponses', async (req, res) => {
   }
 });
 
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Example app listening on port ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, "0.0.0.0", () => console.log(`Example app listening on port ${port}`));
+}
 
 module.exports = app;
