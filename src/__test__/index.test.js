@@ -58,7 +58,7 @@ describe('filteredResponses endpoint', () => {
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
-  test('should filter response', async () => {
+  test('equals filter', async () => {
     const filters = [
       {
         id: "nameId",
@@ -71,7 +71,42 @@ describe('filteredResponses endpoint', () => {
         value: "2024-02-23T05:01:47.691Z"
       }
     ];
+    const res = await request(app)
+      .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
 
+    expect(res.body).toEqual({
+      responses: [],
+      totalResponses: 0,
+      pageCount: 0
+    });
+  });
+
+  test.skip('does not equal filter', async () => {
+    const filters = [];
+    const res = await request(app)
+      .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
+
+    expect(res.body).toEqual({
+      responses: [],
+      totalResponses: 0,
+      pageCount: 0
+    });
+  });
+
+  test.skip('greater than filter', async () => {
+    const filters = [];
+    const res = await request(app)
+      .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
+
+    expect(res.body).toEqual({
+      responses: [],
+      totalResponses: 0,
+      pageCount: 0
+    });
+  });
+
+  test.skip('less than filter', async () => {
+    const filters = [];
     const res = await request(app)
       .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
 
