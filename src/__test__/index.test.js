@@ -17,6 +17,12 @@ const result = {
 		  type: "DatePicker",
 		  value: "1990-03-15T05:01:47.691Z"
 		},
+		{
+		  id: "employeesId",
+		  name: "How many employees work under you?",
+	      type: "number",
+	      value: 2
+		}
 	  ],
 	  submissionId: "abc",
       submissionTime: "2024-03-27T22:20:05.324Z"
@@ -103,6 +109,12 @@ describe('filteredResponses endpoint', () => {
     		  type: "DatePicker",
     		  value: "1990-03-15T05:01:47.691Z"
     		},
+    		{
+    		  id: "employeesId",
+    		  name: "How many employees work under you?",
+    	      type: "number",
+    	      value: 2
+    		}
     	  ],
     	  submissionId: "abc",
           submissionTime: "2024-03-27T22:20:05.324Z"
@@ -113,15 +125,46 @@ describe('filteredResponses endpoint', () => {
     });
   });
 
-  test.skip('does not equal filter', async () => {
-    const filters = [];
+  test('does not equal filter', async () => {
+    const filters = [
+      {
+        id: "employeesId",
+        condition: "does_not_equal",
+        value: 3,
+      }
+    ];
     const res = await request(app)
       .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
 
     expect(res.body).toEqual({
-      responses: [],
-      totalResponses: 0,
-      pageCount: 0
+      responses: [
+        {
+    	  questions: [
+    	    {
+    		  id: "nameId",
+    		  name: "What's your name?",
+    		  type: "ShortAnswer",
+    		  value: "Robert"
+    		},
+    		{
+    		  id: "birthdayId",
+    		  name: "What is your birthday?",
+    		  type: "DatePicker",
+    		  value: "1990-03-15T05:01:47.691Z"
+    		},
+    		{
+    		  id: "employeesId",
+    		  name: "How many employees work under you?",
+    	      type: "number",
+    	      value: 2
+    		}
+    	  ],
+    	  submissionId: "abc",
+          submissionTime: "2024-03-27T22:20:05.324Z"
+    	}
+      ],
+      totalResponses: 1,
+      pageCount: 1
     });
   });
 

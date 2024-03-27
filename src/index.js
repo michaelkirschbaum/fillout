@@ -23,8 +23,9 @@ app.get('/:formId/filteredResponses', async (req, res) => {
       return filters?.every(filter => {
         // get matching question from the filter id
         const entry = res.questions.find(e => e.id === filter.id);
+        if (!entry) return false;
 
-        // if entry does not exist or condition not met return false
+        // if condition not met return false
         switch(filter.condition) {
           case 'equals':
             return entry?.value === filter.value ? true : false;
