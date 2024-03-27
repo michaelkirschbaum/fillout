@@ -205,7 +205,7 @@ describe('filteredResponses endpoint', () => {
     });
   });
 
-  test.skip('less than filter', async () => {
+  test('less than filter', async () => {
     const filters = [];
     const res = await request(app)
       .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
@@ -216,4 +216,22 @@ describe('filteredResponses endpoint', () => {
       pageCount: 0
     });
   });
+
+  test('invalid filter name returns nothing', async () => {
+    const filters = [
+      {
+        id: "nameId",
+        condition: "equal_to",
+        value: "Robert",
+      }
+    ];
+    const res = await request(app)
+      .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
+
+    expect(res.body).toEqual({
+      responses: [],
+      totalResponses: 0,
+      pageCount: 0
+    });
+  })
 });
