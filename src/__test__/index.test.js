@@ -9,20 +9,38 @@ const result = {
 		  id: "nameId",
 		  name: "What's your name?",
 		  type: "ShortAnswer",
-		  value: "Timmy"
+		  value: "Robert"
 		},
 		{
 		  id: "birthdayId",
 		  name: "What is your birthday?",
 		  type: "DatePicker",
-		  value: "2024-02-22T05:01:47.691Z"
+		  value: "1990-03-15T05:01:47.691Z"
 		},
 	  ],
 	  submissionId: "abc",
-      submissionTime: "2024-05-16T23:20:05.324Z"
+      submissionTime: "2024-03-27T22:20:05.324Z"
 	},
+	{
+      questions: [
+        {
+          id: "nameId",
+    	  name: "What's your name?",
+          type: "ShortAnswer",
+          value: "Justin"
+    	},
+    	{
+    	  id: "birthdayId",
+    	  name: "What is your birthday?",
+    	  type: "DatePicker",
+    	  value: "1993-09-25T05:01:47.691Z"
+    	},
+      ],
+      submissionId: "123",
+      submissionTime: "2024-03-27T23:20:05.324Z"
+    }
   ],
-  totalResponses: 1,
+  totalResponses: 2,
   pageCount: 1
 };
 
@@ -63,21 +81,35 @@ describe('filteredResponses endpoint', () => {
       {
         id: "nameId",
         condition: "equals",
-        value: "Timmy",
-      },
-      {
-        id: "birthdayId",
-        condition: "greater_than",
-        value: "2024-02-23T05:01:47.691Z"
+        value: "Robert",
       }
     ];
     const res = await request(app)
       .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
 
     expect(res.body).toEqual({
-      responses: [],
-      totalResponses: 0,
-      pageCount: 0
+      responses: [
+        {
+    	  questions: [
+    	    {
+    		  id: "nameId",
+    		  name: "What's your name?",
+    		  type: "ShortAnswer",
+    		  value: "Robert"
+    		},
+    		{
+    		  id: "birthdayId",
+    		  name: "What is your birthday?",
+    		  type: "DatePicker",
+    		  value: "1990-03-15T05:01:47.691Z"
+    		},
+    	  ],
+    	  submissionId: "abc",
+          submissionTime: "2024-03-27T22:20:05.324Z"
+    	}
+      ],
+      totalResponses: 1,
+      pageCount: 1
     });
   });
 
@@ -93,15 +125,40 @@ describe('filteredResponses endpoint', () => {
     });
   });
 
-  test.skip('greater than filter', async () => {
-    const filters = [];
+  test('greater than filter', async () => {
+    const filters = [
+      {
+        id: "birthdayId",
+        condition: "greater_than",
+        value: "1991-01-01",
+      }
+    ];
     const res = await request(app)
       .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
 
     expect(res.body).toEqual({
-      responses: [],
-      totalResponses: 0,
-      pageCount: 0
+      responses: [
+    	{
+          questions: [
+            {
+              id: "nameId",
+        	  name: "What's your name?",
+              type: "ShortAnswer",
+              value: "Justin"
+        	},
+        	{
+        	  id: "birthdayId",
+        	  name: "What is your birthday?",
+        	  type: "DatePicker",
+        	  value: "1993-09-25T05:01:47.691Z"
+        	},
+          ],
+          submissionId: "123",
+          submissionTime: "2024-03-27T23:20:05.324Z"
+        }
+      ],
+      totalResponses: 1,
+      pageCount: 1
     });
   });
 
@@ -112,7 +169,7 @@ describe('filteredResponses endpoint', () => {
 
     expect(res.body).toEqual({
       responses: [],
-      totalResponses: 0,
+      totalResponses: 1,
       pageCount: 0
     });
   });
