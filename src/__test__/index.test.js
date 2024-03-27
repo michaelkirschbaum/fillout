@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../index');
 
-const response = {
+const result = {
   responses: [],
   totalResponses: 0,
   pageCount: 0
@@ -9,7 +9,7 @@ const response = {
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
-    json: () => Promise.resolve(response),
+    json: () => Promise.resolve(result),
   })
 );
 
@@ -24,8 +24,18 @@ describe('filteredResponses endpoint', () => {
     const res = await request(app)
       .get(`/${formId}/filteredResponses`);
 
-    expect(res.statusCode).toEqual(200);
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(res.text).toEqual(JSON.stringify(response));
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(result);
+  });
+
+  test('should return 500', async () => {
+    fetch.mockImplementationOnce(() => Promise.reject());
+    const res = await request(app)
+      .get(`/${formId}/filteredResponses`);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(res.statusCode).toEqual(500);
+    expect(res.text).toEqual('server error');
   });
 });
