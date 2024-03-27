@@ -29,16 +29,12 @@ app.get('/:formId/filteredResponses', async (req, res) => {
         switch(filter.condition) {
           case 'equals':
             return entry?.value === filter.value ? true : false;
-            break;
           case 'does_not_equal':
             return entry?.value !== filter.value ? true : false;
-            break;
           case 'greater_than':
             return entry?.value > filter.value && !isNaN(new Date(entry.value)) && !isNaN(new Date(filter.value)) ? true : false;
-            break;
           case 'less_than':
             return entry?.value < filter.value && !isNaN(new Date(entry.value)) && !isNaN(new Date(filter.value)) ? true : false;
-            break;
           default:
             return false;
         }  // if filters are not defined return unfiltered responses
@@ -55,8 +51,6 @@ app.get('/:formId/filteredResponses', async (req, res) => {
   }
 });
 
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, "0.0.0.0", () => console.log(`Example app listening on port ${port}`));
-}
+app.listen(port, "0.0.0.0", () => console.log(`listening on port ${port}`));
 
 module.exports = app;

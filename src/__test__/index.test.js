@@ -206,15 +206,17 @@ describe('filteredResponses endpoint', () => {
   });
 
   test('less than filter', async () => {
-    const filters = [];
+    const filters = [
+      {
+        id: "birthdayId",
+        condition: "less_than",
+        value: "2024-01-01",
+      }
+    ];
     const res = await request(app)
       .get(`/${formId}/filteredResponses?filters=` + JSON.stringify(filters));
 
-    expect(res.body).toEqual({
-      responses: [],
-      totalResponses: 1,
-      pageCount: 0
-    });
+    expect(res.body).toEqual(result);
   });
 
   test('invalid filter name returns nothing', async () => {
